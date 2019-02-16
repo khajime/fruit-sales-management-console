@@ -1,0 +1,29 @@
+{# templates/fruitsales/fruitsales_list.html #}
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>販売情報管理</div>
+    <div>
+        <a href="{% url 'home' %}">TOP</a>＞販売情報管理
+    </div>
+    <div>
+        <li>名称 | 単価 | 販売日時</li>
+        {% for fruitsale in object_list %}
+            <li>{{ fruitsale.fruit.name }}
+                | {{ fruitsale.number}}
+                | {{ fruitsale.amount }}
+                | {{ fruitsale.sold_at|date }}
+                | <a href="{% url 'fruitsale_edit' fruitsale.pk %}">編集</a>
+                <!-- | <a href="{% url 'fruitsale_delete' fruitsale.pk %}">削除</a> -->
+                | <form method="POST" action="{% url 'fruitsale_delete' fruitsale.pk %}">
+                    {% csrf_token %}<input type="submit" value="削除">
+                </form>
+            </li>
+        {% endfor %}
+    </div>
+    <div>
+        <form method="GET" action="{% url 'fruitsale_new' %}">
+            <input type="submit" value="販売情報登録">
+        </form>
+    </div>
+{% endblock content %}

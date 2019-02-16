@@ -1,0 +1,10 @@
+{# templates/fruits/fruit_new.html #}
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>果物マスタ登録</h1>
+    <form action="" method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="登録">
+    </form>
+{% endblock content %}
