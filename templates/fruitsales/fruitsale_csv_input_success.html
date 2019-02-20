@@ -1,0 +1,35 @@
+{# templates/fruitsales/fruitsales_list.html #}
+{% extends 'base.html' %}
+
+{% block title %}CSV一括登録成功{% endblock %}
+
+{% block content %}
+    <div>
+        下記レコードが追加されました。
+    </div>
+    <div>
+        <table class="fsmc-table">
+            <tr class="fsmc-table-top-tr">
+                <th>果物</th>
+                <th>単価</th>
+                <th>売り上げ</th>
+                <th>販売日時</th>
+            </tr>
+            {% for fruitsale in object_list %}
+                {% if forloop.counter|divisibleby:2 %}
+                <tr class="fsmc-table-record-tr-even">
+                {% else %}
+                <tr class="fsmc-table-record-tr-odd">
+                {% endif %}
+                    <th>{{ fruitsale.fruit }}</th>
+                    <th>{{ fruitsale.number }}</th>
+                    <th>{{ fruitsale.amount }}</th>
+                    <th>{{ fruitsale.sold_at|date }}</th>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <a href="{% url 'fruitsale_list' %}">戻る</a>
+    </div>
+{% endblock %}

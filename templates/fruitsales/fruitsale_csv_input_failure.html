@@ -1,0 +1,16 @@
+{# templates/fruitsales/fruitsales_list.html #}
+{% extends 'base.html' %}
+
+{% block title %}CSV一括登録に失敗しました{% endblock %}
+
+{% block content %}
+    <div>
+        エラーが発生しました。CSVの内容を確認してください。
+    </div>
+    <div  class="error-msg">
+        <li>{{ message }}</li>
+    </div>
+    <div>
+        <a href="{% url 'fruitsale_list' %}">戻る</a>
+    </div>
+{% endblock %}

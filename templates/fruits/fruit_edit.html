@@ -1,10 +1,16 @@
 {# templates/fruits/fruit_edit.html #}
 {% extends 'base.html' %}
 
+{% block title %}果物マスタ編集{% endblock %}
+
 {% block content %}
-    <h1>果物マスタ編集</h1>
-    <form action="" method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="更新">
-    </form>
+    <div class="edit-form">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="更新">
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'fruit_list' %}">戻る</a>
+    </div>
 {% endblock content %}

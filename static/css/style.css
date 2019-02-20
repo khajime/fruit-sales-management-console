@@ -1,0 +1,62 @@
+div {
+    margin: 10px;
+}
+
+.navbar {
+    background-color: rgb(0, 0, 0);
+}
+
+.navbar a {
+    color: #fff;
+    margin: 20px;
+}
+
+.container {
+    width: 960px;
+}
+
+.edit-form {
+    text-align: center;
+}
+
+.new-form {
+    text-align: center;
+}
+
+.fsmc-table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.fsmc-table th {
+    border-left: 1px solid black;
+}
+
+.fsmc-table-top-tr > th {
+    background-color: #aaa;
+}
+
+.fsmc-table-record-tr-even > th {
+    background-color: #fff;
+}
+
+.fsmc-table-record-tr-odd > th {
+    background-color: #eee;
+}
+
+.linklike-del-btn {
+    display: inline;
+    background: none;
+    color: rgb(0, 0, 238);
+    border: none; 
+    padding: 0;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.error-msg {
+    color: red;
+}

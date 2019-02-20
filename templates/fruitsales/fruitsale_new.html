@@ -2,9 +2,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>販売情報登録</h1>
-    <form action="" method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="登録">
-    </form>
+    <div class="new-form">
+        <h2>販売情報登録</h2>
+        <form action="" method="POST">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="登録">
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'fruitsale_list' %}">戻る</a>
+    </div>
 {% endblock content %}

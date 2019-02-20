@@ -1,0 +1,65 @@
+{# templates/stats/fruitsale_stats.html #}
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+            <h2>
+                販売統計情報
+            </h2>
+        </div>
+        <div>
+            <a href="{% url 'home' %}">TOP</a>＞販売統計情報
+        </div>
+        <div>
+            <p>累計</p>
+            <p>{{ total_sales }}円</p>
+        </div>
+        <div>
+            <p>月別</p>
+            <table class='fsmc-table'>
+                <tr class="fsmc-table-top-tr">
+                    <th>月</th>
+                    <th>売り上げ</th>
+                    <th>内訳</th>
+                </tr>
+                {% for sale in monthly_sales %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <tr class="fsmc-table-record-tr-even">
+                    {% else %}
+                    <tr class="fsmc-table-record-tr-odd">
+                    {% endif %}
+                        <th>{{ sale.date|date:"Y/n" }}</th>
+                        <th>{{ sale.amount }}</th>
+                        <th>
+                            {% for sale_d in sale.detail %}
+                                {{ sale_d.name }}:{{ sale_d.amount }}円({{ sale_d.number }})
+                            {% endfor %}
+                        </th>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p>日別</p>
+            <table class="fsmc-table">
+                <tr class="fsmc-table-top-tr">
+                    <th>日</th>
+                    <th>売り上げ</th>
+                    <th>内訳</th>
+                </tr>
+                {% for sale in daily_sales %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <tr class="fsmc-table-record-tr-even">
+                    {% else %}
+                    <tr class="fsmc-table-record-tr-odd">
+                    {% endif %}
+                        <th>{{ sale.date|date:"Y/n/j" }}</th>
+                        <th>{{ sale.amount }}</th>
+                        <th>
+                            {% for sale_d in sale.detail %}
+                                {{ sale_d.name }}:{{ sale_d.amount }}円({{ sale_d.number }})
+                            {% endfor %}
+                        </th>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+{% endblock content %}

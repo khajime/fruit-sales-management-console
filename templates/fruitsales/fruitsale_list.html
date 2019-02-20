@@ -1,29 +1,55 @@
 {# templates/fruitsales/fruitsales_list.html #}
 {% extends 'base.html' %}
 
+{% block title %}販売情報管理{% endblock %}
+
 {% block content %}
-    <div>販売情報管理</div>
     <div>
         <a href="{% url 'home' %}">TOP</a>＞販売情報管理
     </div>
     <div>
-        <li>名称 | 単価 | 販売日時</li>
-        {% for fruitsale in object_list %}
-            <li>{{ fruitsale.fruit.name }}
-                | {{ fruitsale.number}}
-                | {{ fruitsale.amount }}
-                | {{ fruitsale.sold_at|date }}
-                | <a href="{% url 'fruitsale_edit' fruitsale.pk %}">編集</a>
-                <!-- | <a href="{% url 'fruitsale_delete' fruitsale.pk %}">削除</a> -->
-                | <form method="POST" action="{% url 'fruitsale_delete' fruitsale.pk %}">
-                    {% csrf_token %}<input type="submit" value="削除">
-                </form>
-            </li>
-        {% endfor %}
+        <table class="fsmc-table">
+            <tr class="fsmc-table-top-tr">
+                <th>果物</th>
+                <th>単価</th>
+                <th>売り上げ</th>
+                <th>販売日時</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for fruitsale in object_list %}
+                {% if forloop.counter|divisibleby:2 %}
+                <tr class="fsmc-table-record-tr-even">
+                {% else %}
+                <tr class="fsmc-table-record-tr-odd">
+                {% endif %}
+                    <th>{{ fruitsale.fruit }}</th>
+                    <th>{{ fruitsale.number }}</th>
+                    <th>{{ fruitsale.amount }}</th>
+                    <th>{{ fruitsale.sold_at|date }}</th>
+                    <th>
+                        <a href="{% url 'fruitsale_edit' fruitsale.pk %}">編集</a>
+                    </th>
+                    <th>
+                        <form method="POST" action="{% url 'fruitsale_delete' fruitsale.pk %}" style="display: inline;">
+                            {% csrf_token %}<input type="submit" value="削除" class="linklike-del-btn">
+                        </form>
+                    </th>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
-    <div>
+    <div style="text-align: right;">
         <form method="GET" action="{% url 'fruitsale_new' %}">
             <input type="submit" value="販売情報登録">
+        </form>
+    </div>
+    <div>
+        <h3>CSV一括登録</h3>
+        <form method="POST" action="{% url 'fruitsale_csv_input' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="records-csv" accept=".csv">
+            <input type="submit" value="CSVアップロード">
         </form>
     </div>
 {% endblock content %}

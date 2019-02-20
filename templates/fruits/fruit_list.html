@@ -1,28 +1,46 @@
 {# templates/fruits/fruits_list.html #}
 {% extends 'base.html' %}
 
+{% block title %}果物マスタ管理{% endblock %}
+
 {% block content %}
-    <div>果物マスタ管理</div>
     <div>
         <a href="{% url 'home' %}">TOP</a>＞果物マスタ管理
     </div>
     <div>
-        <li>名称 | 単価 | 最終更新</li>
-        {% for fruit in object_list %}
-            <li>
-                {{ fruit.name }}
-                | {{ fruit.price}}
-                | {{ fruit.updated_at|date }}
-                | <a href="{% url 'fruit_edit' fruit.pk %}">編集</a>
-                <!-- | <a href="{% url 'fruit_delete' fruit.pk %}">削除</a> -->
-                | <form method="POST" action="{% url 'fruit_delete' fruit.pk %}">{% csrf_token %}
-                    <input type="submit" value="削除">
-                </form>
-            </li>
-        {% endfor %}
+        <table class='fsmc-table'>
+            <tr class='fsmc-table-top-tr'>
+                <th>ID</th>
+                <th>名称</th>
+                <th>単価</th>
+                <th>最終更新</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for fruit in object_list %}
+                {% if forloop.counter|divisibleby:2 %}
+                <tr class="fsmc-table-record-tr-even">
+                {% else %}
+                <tr class="fsmc-table-record-tr-odd">
+                {% endif %}
+                    <th>{{ fruit.id }}</th>
+                    <th>{{ fruit.name }}</th>
+                    <th>{{ fruit.price}}</th>
+                    <th>{{ fruit.updated_at|date }}</th>
+                    <th>
+                        <a href="{% url 'fruit_edit' fruit.pk %}">編集</a>
+                    </th>
+                    <th>
+                        <form method="POST" action="{% url 'fruit_delete' fruit.pk %}" style="display: inline;">{% csrf_token %}
+                            <input type="submit" value="削除" class="linklike-del-btn">
+                        </form>
+                    </th>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
     <div>
-        <form method="GET" action="{% url 'fruit_new' %}">
+        <form method="GET" action="{% url 'fruit_new' %}" style="float: right;">
             <input type="submit" value="新規追加">
         </form>
     </div>

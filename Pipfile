@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = ">=2.0"
 pylint = "*"
+python-dateutil = "*"
 
 [dev-packages]
 
