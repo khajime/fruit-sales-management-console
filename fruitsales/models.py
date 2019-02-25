@@ -38,7 +38,17 @@ def generate_sales_from_csv(file):
         if not fruit:
             raise ValidationError('果物マスタにない果物名が指定されました: {}'.format(row[0]))
 
-        sold_at = timezone.make_aware(dateparse.parse_datetime(row[3]))
+        # 販売日時をパース
+        try:
+            sold_at = dateparse.parse_datetime(row[3])
+        except ValueError:
+            raise ValidationError('不正な日時指定です: {}'.format(row[3]))
+            
+        if sold_at is None:
+            raise ValidationError('不正な日時フォーマットです: {}'.format(row[3]))
+
+        # ローカルタイム化
+        sold_at = timezone.make_aware(sold_at)
 
         # 複数候補がある場合はインデックス０のものを使用
         sale = Sale(fruit=fruit[0], number=row[1], amount=row[2], sold_at=sold_at)
