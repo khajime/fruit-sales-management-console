@@ -19,7 +19,7 @@ class LoginFruitViewAccessTest(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_fruit_create_view(self):
-        url = reverse('fruit_new', args=(1,))
+        url = reverse('fruit_new')
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
 
