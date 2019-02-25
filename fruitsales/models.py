@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.utils import timezone, dateparse
 
 
 class Sale(models.Model):
@@ -37,8 +38,10 @@ def generate_sales_from_csv(file):
         if not fruit:
             raise ValidationError('果物マスタにない果物名が指定されました: {}'.format(row[0]))
 
+        sold_at = timezone.make_aware(dateparse.parse_datetime(row[3]))
+
         # 複数候補がある場合はインデックス０のものを使用
-        sale = Sale(fruit=fruit[0], number=row[1], amount=row[2], sold_at=row[3])
+        sale = Sale(fruit=fruit[0], number=row[1], amount=row[2], sold_at=sold_at)
 
         sale_list.append(sale)
 
