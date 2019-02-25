@@ -193,7 +193,7 @@ class CsvInputTest(TestCase):
         self.assertEquals(sale2.number, 3)
         self.assertEquals(sale2.amount, 270)
         self.assertEquals(sale2.sold_at, timezone.make_aware(
-            dateparse.parse_datetime('2016-02-02 10:35')))
+            dateparse.parse_datetime('2016-02-01 10:35')))
 
     def test_invalid_csv_1(self):
         """日付フォーマットがおかしい場合、ValidationError"""
