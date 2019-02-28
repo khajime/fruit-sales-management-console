@@ -40,5 +40,7 @@ class FruitEditView(LoginRequiredMixin, UpdateView):
 class FruitDeleteView(LoginRequiredMixin, DeleteView):
     """果物マスタ削除ビュー"""
     model = models.Fruit
+    template_name = 'fruits/fruit_delete.html'
+    fields = ('name', 'price', 'updated_at')
     success_url = reverse_lazy('fruit_list')
     login_url = 'login'
