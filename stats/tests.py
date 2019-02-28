@@ -6,7 +6,7 @@ from django.utils import timezone, dateparse
 
 from fruits.models import Fruit
 from fruitsales.models import Sale
-from stats.utils import cumulate_sales_fruitwise
+from stats.utils import get_sales_filtered_sold_at, cumulate_sales_fruitwise
 
 
 class LoginStatsViewAccessTest(TestCase):
@@ -31,6 +31,46 @@ class NoLoginStatsViewAccessTest(TestCase):
         url = reverse('fruitsale_stats')
         response = self.client.get(url)
         self.assertRedirects(response, reverse('login') + '?next=' + url)
+
+
+class GetSalesFilteredSoldAtTest(TestCase):
+    """get_sales_filtered_sold_at関数のテスト"""
+    def setUp(self):
+        f1 = Fruit.objects.create(name='リンゴ', price=300)
+        f2 = Fruit.objects.create(name='オレンジ', price=200)
+
+        # Sale objects
+        Sale.objects.create(fruit=f1, number=5, amount=1500, 
+                            sold_at=timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00')))
+        Sale.objects.create(fruit=f2, number=10, amount=3000, 
+                            sold_at=timezone.make_aware(dateparse.parse_datetime('2019-02-28 23:59:59')))
+
+    def test_get_sales_filtered_sold_at_1(self):
+        """正しいレコードが取得されることをテスト"""
+        start = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00'))
+        end = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:01'))
+
+        sales = get_sales_filtered_sold_at(start, end)
+
+        self.assertEquals(len(sales), 1)
+        self.assertEquals(sales[0].fruit.name, 'リンゴ')
+        self.assertEquals(sales[0].number, 5)
+        self.assertEquals(sales[0].amount, 1500)
+    
+    def test_get_sales_filtered_sold_at_2(self):
+        """正しいレコードが取得されることをテスト"""
+        start = timezone.make_aware(dateparse.parse_datetime('2019-02-28 23:59:59'))
+        end = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:01'))
+
+        sales = get_sales_filtered_sold_at(start, end)
+
+        self.assertEquals(len(sales), 2)
+        self.assertEquals(sales[0].fruit.name, 'リンゴ')
+        self.assertEquals(sales[0].number, 5)
+        self.assertEquals(sales[0].amount, 1500)
+        self.assertEquals(sales[1].fruit.name, 'オレンジ')
+        self.assertEquals(sales[1].number, 10)
+        self.assertEquals(sales[1].amount, 3000)
 
 
 class CumulateSalesFruitwiseTest(TestCase):
