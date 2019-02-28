@@ -25,11 +25,11 @@ def cumulate_sales_fruitwise(start_datetime, end_datetime):
         start_date: 期間の始まり(inclusive)
         end_date: 期間の終わり(exclusive)
     Returns:
-        期間内の売り上げ累計, 果物ごとの集計値
+        期間内の売り上げ累計, 果物ごとの集計値リスト
     """
     # sales = Sale.objects.filter(sold_at__gte=start_datetime,
     #                     sold_at__lt=end_datetime)
-    sales = filter_sales_sold_at(start_datetime, end_datetime)
+    sales = get_sales_filtered_sold_at(start_datetime, end_datetime)
     sales_amount = sum([sale.amount for sale in sales])
 
     # 果物ごとに集計
@@ -44,4 +44,4 @@ def cumulate_sales_fruitwise(start_datetime, end_datetime):
                                             'amount': sale.amount
                                         }
 
-    return sales_amount, result_dict.values()
+    return sales_amount, list(result_dict.values())
