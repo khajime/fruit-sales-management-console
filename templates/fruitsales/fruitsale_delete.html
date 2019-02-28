@@ -1,0 +1,22 @@
+{# templates/fruitsales/fruitsale_delete.html #}
+{% extends 'base.html' %}
+
+{% block title %}販売情報削除{% endblock %}
+
+{% block content %}
+    <div class="delete-form">
+        <div>
+            <h3 style="color: red;">下記レコードを削除します。よろしいですか？</h3>
+            <li>果物：{{ object.fruit }}</li>
+            <li>個数：{{ object.number }}</li>
+            <li>売り上げ：{{ object.amount }}</li>
+            <li>販売日時：{{ object.sold_at|date }}</li>
+        </div>
+        <form action="" method="POST">{% csrf_token %}
+            <input type="submit" value="削除">
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'fruitsale_list' %}">戻る</a>
+    </div>
+{% endblock content %}

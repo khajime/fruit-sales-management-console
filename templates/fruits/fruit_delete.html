@@ -1,0 +1,22 @@
+{# templates/fruits/fruit_delete.html #}
+{% extends 'base.html' %}
+
+{% block title %}果物マスタ削除{% endblock %}
+
+{% block content %}
+    <div class="delete-form">
+        <div>
+            <h3 style="color: red;">下記レコードを削除します。よろしいですか？</h3>
+            <li>名称：{{ object.name }}</li>
+            <li>単価：{{ object.price }}</li>
+            <li>最終更新：{{ object.updated_at }}</li>
+        </div>
+        <form action="" method="POST">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="削除">
+        </form>
+    </div>
+    <div>
+        <a href="{% url 'fruit_list' %}">戻る</a>
+    </div>
+{% endblock content %}
