@@ -63,6 +63,7 @@ class SaleUpdateView(LoginRequiredMixin, UpdateView):
 class SaleDeleteView(LoginRequiredMixin, DeleteView):
     """販売情報削除ビュー"""
     model = models.Sale
+    template_name = 'fruitsales/fruitsale_delete.html'
     success_url = reverse_lazy('fruitsale_list')
     login_url = 'login'
     
