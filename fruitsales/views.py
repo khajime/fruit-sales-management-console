@@ -14,7 +14,6 @@ from . import models
 from . import forms
 
 
-# get logger
 logger = logging.getLogger(__name__)
 
 
