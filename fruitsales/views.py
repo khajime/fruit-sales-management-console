@@ -1,3 +1,6 @@
+import logging
+
+
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -10,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from . import models
 from . import forms
 from fruitsales.utils import generate_sales_from_csv
+
+
+logger = logging.getLogger(__name__)
 
 
 class SaleListView(LoginRequiredMixin, ListView):
@@ -77,7 +83,7 @@ def sales_csv_input_view(request):
     """
     import csv
     if request.method == 'POST':
-        print(request.FILES)
+        logger.debug('received files: %s', list(request.FILES.items()))
         if 'records-csv' in request.FILES:
             try:
                 sales = generate_sales_from_csv(request.FILES['records-csv'])
