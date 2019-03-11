@@ -46,7 +46,9 @@ class GetSalesFilteredSoldAtTest(TestCase):
                             sold_at=timezone.make_aware(dateparse.parse_datetime('2019-02-28 23:59:59')))
 
     def test_get_sales_filtered_sold_at_1(self):
-        """正しいレコードが取得されることをテスト"""
+        """正しいレコードが取得されることをテスト
+        * salesはNone
+        """
         start = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00'))
         end = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:01'))
 
@@ -58,7 +60,9 @@ class GetSalesFilteredSoldAtTest(TestCase):
         self.assertEquals(sales[0].amount, 1500)
     
     def test_get_sales_filtered_sold_at_2(self):
-        """正しいレコードが取得されることをテスト"""
+        """正しいレコードが取得されることをテスト
+        * salesはNone
+        """
         start = timezone.make_aware(dateparse.parse_datetime('2019-02-28 23:59:59'))
         end = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:01'))
 
@@ -72,6 +76,21 @@ class GetSalesFilteredSoldAtTest(TestCase):
         self.assertEquals(sales[1].number, 10)
         self.assertEquals(sales[1].amount, 3000)
 
+    def test_get_sales_filtered_sold_at_3(self):
+        """正しいレコードが取得されることをテスト
+        * salesを外部から与える
+        """
+        start = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00'))
+        end = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:01'))
+
+        sales = Sale.objects.all()
+
+        sales = get_sales_filtered_sold_at(start, end, sales)
+
+        self.assertEquals(len(sales), 1)
+        self.assertEquals(sales[0].fruit.name, 'リンゴ')
+        self.assertEquals(sales[0].number, 5)
+        self.assertEquals(sales[0].amount, 1500)
 
 class CumulateSalesFruitwiseTest(TestCase):
     """cumulate_sales_fruitwiseで統計量が正しく計算されるかどうかのテスト"""
@@ -91,9 +110,10 @@ class CumulateSalesFruitwiseTest(TestCase):
         Sale.objects.create(fruit=f2, number=4, amount=800, 
                             sold_at=timezone.make_aware(dateparse.parse_datetime('2019-03-22 15:30:00')))
 
-
     def test_cumulate_sales_fruitwise_1(self):
-        """正しい集計値が計算されることをテスト"""
+        """正しい集計値が計算されることをテスト
+        * salesはNone
+        """
         start = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00'))
         end = timezone.make_aware(dateparse.parse_datetime('2019-04-01 00:00:00'))
 
@@ -111,7 +131,9 @@ class CumulateSalesFruitwiseTest(TestCase):
         self.assertEquals(details[1]['amount'], 3000)
 
     def test_cumulate_sales_fruitwise_2(self):
-        """正しい集計値が計算されることをテスト"""
+        """正しい集計値が計算されることをテスト
+        * salesはNone
+        """
         start = timezone.make_aware(dateparse.parse_datetime('2019-02-28 23:59:59'))
         end = timezone.make_aware(dateparse.parse_datetime('2019-04-01 00:00:00'))
 
@@ -123,6 +145,28 @@ class CumulateSalesFruitwiseTest(TestCase):
         self.assertEquals(details[0]['name'], 'リンゴ')
         self.assertEquals(details[0]['number'], 17)
         self.assertEquals(details[0]['amount'], 5100)
+
+        self.assertEquals(details[1]['name'], 'オレンジ')
+        self.assertEquals(details[1]['number'], 15)
+        self.assertEquals(details[1]['amount'], 3000)
+
+    def test_cumulate_sales_fruitwise_3(self):
+        """正しい集計値が計算されることをテスト
+        * salesは外部から与える
+        """
+        start = timezone.make_aware(dateparse.parse_datetime('2019-03-01 00:00:00'))
+        end = timezone.make_aware(dateparse.parse_datetime('2019-04-01 00:00:00'))
+
+        sales = Sale.objects.all()
+
+        sales_amount, details = cumulate_sales_fruitwise(start, end, sales=sales)
+
+        self.assertEquals(sales_amount, 5100)
+        self.assertEquals(len(details), 2)
+
+        self.assertEquals(details[0]['name'], 'リンゴ')
+        self.assertEquals(details[0]['number'], 7)
+        self.assertEquals(details[0]['amount'], 2100)
 
         self.assertEquals(details[1]['name'], 'オレンジ')
         self.assertEquals(details[1]['number'], 15)

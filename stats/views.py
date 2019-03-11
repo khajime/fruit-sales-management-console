@@ -12,8 +12,11 @@ from .utils import cumulate_sales_fruitwise
 @login_required
 def fruitsale_stats_view(request):
     if request.method == 'GET':
+        # get all Sale objects
+        sales = Sale.objects.all()
+
         # cumulate sales amount
-        total_sales = sum([sale.amount for sale in Sale.objects.all()])
+        total_sales = sum([sale.amount for sale in sales])
 
         # get current local time
         now = timezone.localtime()
@@ -29,7 +32,7 @@ def fruitsale_stats_view(request):
             start_date = start_date.astimezone(timezone.utc)
             end_date = end_date.astimezone(timezone.utc)
 
-            amount, detail = cumulate_sales_fruitwise(start_date, end_date)
+            amount, detail = cumulate_sales_fruitwise(start_date, end_date, sales=sales)
 
             monthly_sales.append({'date': start_date, 'amount': amount, 'detail': detail})
 
@@ -44,7 +47,7 @@ def fruitsale_stats_view(request):
             start_date = start_date.astimezone(timezone.utc)
             end_date = end_date.astimezone(timezone.utc)
 
-            amount, detail = cumulate_sales_fruitwise(start_date, end_date)
+            amount, detail = cumulate_sales_fruitwise(start_date, end_date, sales=sales)
             
             daily_sales.append({'date': start_date, 'amount': amount, 'detail': detail})
 
