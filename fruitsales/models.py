@@ -29,7 +29,7 @@ def generate_sales_from_csv(file):
     records = csv.reader(records_csv, delimiter=',')
     sale_list = []
     for row in records:
-        if len(row) < 4:
+        if len(row) != 4:
             raise ValidationError('要素数が４以外です: ' + ','.join(row))
 
         # Fruitオブジェクトを取得
