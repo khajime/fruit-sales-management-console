@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from . import models
 from . import forms
+from fruitsales.utils import generate_sales_from_csv
 
 
 class SaleListView(LoginRequiredMixin, ListView):
@@ -79,7 +80,7 @@ def sales_csv_input_view(request):
         print(request.FILES)
         if 'records-csv' in request.FILES:
             try:
-                sales = models.generate_sales_from_csv(request.FILES['records-csv'])
+                sales = generate_sales_from_csv(request.FILES['records-csv'])
             except ValidationError as e:
                 return  render(request, 'fruitsales/fruitsale_csv_input_failure.html', {'message': e.args[0]})
                         

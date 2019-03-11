@@ -8,7 +8,8 @@ from django.urls import reverse
 from django.utils import timezone, dateparse
 
 
-from ..models import Sale, generate_sales_from_csv
+from fruitsales.models import Sale
+from fruitsales.utils import generate_sales_from_csv
 from fruits.models import Fruit
 
 
