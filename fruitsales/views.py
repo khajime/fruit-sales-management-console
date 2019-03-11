@@ -83,7 +83,7 @@ def sales_csv_input_view(request):
     """
     import csv
     if request.method == 'POST':
-        logger.debug('received files: ' + str(list(request.FILES.items())))
+        logger.debug('received files: %s', list(request.FILES.items()))
         if 'records-csv' in request.FILES:
             try:
                 sales = models.generate_sales_from_csv(request.FILES['records-csv'])
